@@ -18,11 +18,11 @@ class DataIngestion:
         
     def export_data_into_feature_store(self) -> DataFrame:
         """
-        EXport mongo db collection record as Dataframe into feature store
+        Export mongo db collection record as Dataframe into feature store
         """
 
         try:
-            logging.info("EXporting data from mongodb to feature store")
+            logging.info("Exporting data from mongodb to feature store")
             sensor_data = SensorData()
             dataframe = sensor_data.export_collection_as_dataframe(
                 collection_name=self.data_ingestion_config.collection_name
