@@ -17,7 +17,7 @@ class SensorData:
             self.mongo_client = MongoDBClient(database_name=DATABASE_NAME)
         except Exception as e :
             raise SensorException(e,sys)
-        MonMongoDBClient
+        
     def save_csv_file(self,file_path,collection_name:str,database_name:Optional[str]=None):
         try:
             dataframe = pd.read_csv(file_path)
