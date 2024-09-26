@@ -43,14 +43,18 @@ class DataIngestion:
         except Exception as e :
             raise SensorException(e,sys)
         
-    def split_data_as_train_test(self,dataframe: DataFrame) -> None :
+    def split_data_as_train_test_predict(self,dataframe: DataFrame) -> None :
 
         try:
             train_set, test_set = train_test_split(
                 dataframe,test_size=self.data_ingestion_config.train_test_split_ratio
             )
+            split_index = len(test_set)
+            predict_set = test_set[split_index:]
+            test_set = test_set[:split_index]
+
             logging.info("Performed train test split on the dataframe")
-            logging.info("Exited split_data_as_train_test method of DataIngestion class")
+            
             dir_path = os.path.dirname(self.data_ingestion_config.training_file_path)
             os.makedirs(dir_path,exist_ok=True)
             logging.info(f"Exporting train and test file path.")
@@ -64,7 +68,13 @@ class DataIngestion:
                 self.data_ingestion_config.testing_file_path,
                 index=False,header=True
             )
+
+            predict_set.to_csv(
+                self.data_ingestion_config.pred_file_path,
+                index=False,header=True
+            )
             logging.info(f"Exported train and test file path.")
+            logging.info("Exited split_data_as_train_test_predict method of DataIngestion class")
 
         except Exception as e :
             raise SensorException(e,sys)
@@ -77,7 +87,7 @@ class DataIngestion:
                 axis=1,
                 inplace=True
             )            
-            self.split_data_as_train_test(dataframe=dataframe)
+            self.split_data_as_train_test_predict(dataframe=dataframe)
             dataingestionartifact = DataIngestionArtifact(
                 trained_file_path=self.data_ingestion_config.training_file_path,
                 test_file_path=self.data_ingestion_config.testing_file_path

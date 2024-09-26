@@ -62,11 +62,12 @@ class DataTransformation :
                 # Training data
                 input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN],axis=1)
                 target_feature_train = train_df[TARGET_COLUMN]
-                target_feature_train = target_feature_train.replace(TargetValueMapping().to_dct())
+                target_feature_train = target_feature_train.replace(TargetValueMapping().to_dct()).infer_objects(copy=False)
 
                 # Testing data
                 input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN],axis=1)
-                target_feature_test = test_df[TARGET_COLUMN].replace(TargetValueMapping().to_dct())
+                target_feature_test = test_df[TARGET_COLUMN]
+                target_feature_test = target_feature_test.replace(TargetValueMapping().to_dct()).infer_objects(copy=False)
 
                 preprocessor_obj = preprocessor.fit(input_feature_train_df)
 
